@@ -38,6 +38,7 @@
  * @author João Paulo Marquesini (markezine)
  * 
  */
+
 package me.markezine.lazyloader.core {
 	import flash.display.Loader;
 	import flash.events.AsyncErrorEvent;
@@ -62,7 +63,6 @@ package me.markezine.lazyloader.core {
 	import mx.events.Request;
 	
 	[Event(name="init", type="flash.events.Event")]
-	[Event(name="open", type="flash.events.Event")]
 	[Event(name="unload", type="flash.events.Event")]
 	[Event(name="id3", type="flash.events.Event")]
 	[Event(name="httpStatus", type="flash.events.HTTPStatusEvent")]
@@ -71,6 +71,7 @@ package me.markezine.lazyloader.core {
 	[Event(name="netStatus", type="flash.events.NetStatusEvent")]
 	[Event(name="sampleData", type="flash.events.SampleDataEvent")]
 	[Event(name="securityError", type="flash.events.SecurityErrorEvent")]
+	[Event(name="open", type="me.markezine.lazyloader.events.LazyLoaderEvent")]
 	[Event(name="size_complete", type="me.markezine.lazyloader.events.LazyLoaderEvent")]
 	[Event(name="complete", type="me.markezine.lazyloader.events.LazyLoaderEvent")]
 	[Event(name="progress", type="me.markezine.lazyloader.events.LazyLoaderEvent")]
@@ -120,6 +121,10 @@ package me.markezine.lazyloader.core {
 			_params = params;
 		}
 		
+		/**
+		 * @inheritDoc
+		 * 
+		 */
 		override public function addEventListener(type:String, listener:Function, useCapture:Boolean=false, priority:int=0, useWeakReference:Boolean=false):void{
 			switch(type){
 				case Event.INIT:
@@ -145,6 +150,10 @@ package me.markezine.lazyloader.core {
 			super.addEventListener(type, listener, useCapture, priority, useWeakReference);
 		}
 		
+		/**
+		 * @inheritDoc
+		 * 
+		 */
 		override public function removeEventListener(type:String, listener:Function, useCapture:Boolean=false):void{
 			switch(type){
 				case Event.INIT:
@@ -170,6 +179,10 @@ package me.markezine.lazyloader.core {
 			super.removeEventListener(type, listener, useCapture);
 		}
 		
+		/**
+		 * @inheritDoc
+		 * 
+		 */
 		override public function dispatchEvent(event:Event):Boolean{
 			switch(event.type){
 				case Event.COMPLETE:

@@ -42,11 +42,29 @@ package me.markezine.lazyloader.core
 {
 	public class ItemType
 	{
+		/**
+		 * Used to force the file to be loaded as audio 
+		 */
 		public static const AUDIO:String = "audio";
+		/**
+		 * Used to force the file to be loaded as a bitmap 
+		 */
 		public static const BITMAP:String = "bitmap";
+		/**
+		 * Used to force the file to be loaded as a swf.
+		 */
 		public static const FLASH:String = "flash";
+		/**
+		 * Used to force the file to be loaded as text data. 
+		 */
 		public static const TEXT:String = "text";
+		/**
+		 * Used to force the file to be loaded as Binary data. 
+		 */
 		public static const BINARY:String = "binary";
+		/**
+		 * Used to force the file to be loaded as Video data. 
+		 */
 		public static const VIDEO:String = "video"; 
 	}
 }

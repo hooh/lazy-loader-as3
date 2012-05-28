@@ -43,12 +43,37 @@ package me.markezine.lazyloader.events
 	import flash.events.Event;
 	import flash.events.ProgressEvent;
 	
+	/**
+	 * The LazyLoaderEvent is dispatched when normal loading events happen, either in the LazyLoader
+	 * class or in the LazyLoaderItem class. There are five types of LazyLoaderEvents: SIZE_COMPLETE
+	 * is dispatched when one LazyLoaderItem or a queue in LazyLoader sucessfully get the size of the
+	 * files to be loaded. COMPLETE is dispatched when a LazyLoaderItem finishes loading or LazyLoader
+	 * finishes a queue. CANCELED is dispatched when a LazyLoaderItem have a close() method called, 
+	 * or a LazyLoader have a stop() method called. PROGRESS is called by both when loading progress
+	 * happens. OPEN is dispatched when a LazyLoaderItem starts loading.
+	 */
 	public class LazyLoaderEvent extends ProgressEvent
 	{
+		
+		/**
+		 * Defines the value of the type property of a size complete event object. 
+		 */
 		public static const SIZE_COMPLETE:String = "sizeComplete";
+		/**
+		 * Defines the value of the type property of a complete event object. 
+		 */
 		public static const COMPLETE:String = "complete";
+		/**
+		 * Defines the value of the type property of a loading canceled event object. 
+		 */
 		public static const CANCELED:String = "canceled";
+		/**
+		 * Defines the value of the type property of a loading progress event object. 
+		 */
 		public static const PROGRESS : String = "progress";
+		/**
+		 * Defines the value of the type property of a loading start event object. 
+		 */
 		public static const OPEN:String = "open";
 		
 		public function LazyLoaderEvent(type:String, bytesLoaded:uint=0, bytesTotal:uint=0, bubbles:Boolean=false, cancelable:Boolean=false)
@@ -56,10 +81,16 @@ package me.markezine.lazyloader.events
 			super(type, bubbles, cancelable, bytesLoaded, bytesTotal);
 		}
 		
+		/** 
+		 * @inheritDoc
+		 */
 		override public function toString():String{
 			return formatToString("LazyLoaderEvent", "type", "bytesLoaded", "bytesTotal", "bubbles", "cancelable"); 
 		}
 		
+		/** 
+		 * @inheritDoc
+		 */
 		override public function clone():Event{
 			return new LazyLoaderEvent(type, bytesLoaded, bytesTotal, bubbles, cancelable);
 		}
