@@ -81,7 +81,6 @@ package me.markezine.lazyloader.core
 			if(parameters is String && items[parameters]){
 				return items[parameters];
 			}
-			return null;
 			
 			var filteredList:XMLList = xml..item;
 			
