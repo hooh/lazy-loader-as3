@@ -40,6 +40,11 @@
  */
 package me.markezine.lazyloader.core
 {
+	/**
+	 * The LazyLoaderVariables class can be used to create the parameters object keeping the 
+	 * auto complete for the default parameters.
+	 * 
+	 */
 	public dynamic class LazyLoaderVariables
 	{
 		/**

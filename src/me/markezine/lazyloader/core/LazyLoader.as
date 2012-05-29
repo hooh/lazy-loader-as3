@@ -58,6 +58,12 @@ package me.markezine.lazyloader.core {
 	 * calling <code>LazyLoader.getInstance()</code>
 	 * @see LazyLoader.getInstance 
 	 */
+	[Event(name="open", type="me.markezine.lazyloader.events.LazyLoaderEvent")]
+	[Event(name="size_complete", type="me.markezine.lazyloader.events.LazyLoaderEvent")]
+	[Event(name="complete", type="me.markezine.lazyloader.events.LazyLoaderEvent")]
+	[Event(name="progress", type="me.markezine.lazyloader.events.LazyLoaderEvent")]
+	[Event(name="canceled", type="me.markezine.lazyloader.events.LazyLoaderEvent")]
+	
 	public class LazyLoader extends EventDispatcher
 	{
 		private static var instances:Dictionary = new Dictionary();
@@ -102,7 +108,7 @@ package me.markezine.lazyloader.core {
 		 * @return The <code>LazyLoader</code> associated with the given id. 
 		 */		
 		static public function getInstance(id:String = "default", autoCreate:Boolean = true):LazyLoader{
-			if(!instances[id] && autoCreate) instances[id] = new LazyLoader(id);
+			if(!instances[id] && autoCreate) new LazyLoader(id);
 			return LazyLoader(instances[id]);
 		}
 		
@@ -342,7 +348,7 @@ package me.markezine.lazyloader.core {
 		}
 		
 		/**
-		 * You can use this method to retrieve a </code>String</code> data that matches the 
+		 * You can use this method to retrieve a <code>String</code> data that matches the 
 		 * properties of the parameters object. You can also use a string to match the item id or 
 		 * url. Please note that if there are more than one item with the same parameters, it will
 		 * return the last added item.
@@ -369,7 +375,7 @@ package me.markezine.lazyloader.core {
 		}
 		
 		/**
-		 * You can use this method to retrieve a </code>XML</code> data that matches the 
+		 * You can use this method to retrieve a <code>XML</code> data that matches the 
 		 * properties of the parameters object. You can also use a string to match the item id or 
 		 * url. Please note that if there are more than one item with the same parameters, it will
 		 * return the last added item. If called on the class, searches the parameter in all 
@@ -379,7 +385,7 @@ package me.markezine.lazyloader.core {
 		 * @return The <code>XML</code> matching the current parameters. 
 		 * 
 		 */
-		public function getXML(parameters:Object):String{
+		public function getXML(parameters:Object):XML{
 			var item:LazyLoaderItem = this.getItem(parameters);
 			try{
 				return new XML(item.data);
@@ -399,7 +405,7 @@ package me.markezine.lazyloader.core {
 		}
 		
 		/**
-		 * You can use this method to retrieve a </code>NetStream</code> object that matches the 
+		 * You can use this method to retrieve a <code>NetStream</code> object that matches the 
 		 * properties of the parameters object. You can also use a string to match the item id or 
 		 * url. Please note that if there are more than one item with the same parameters, it will
 		 * return the last added item. If called on the class, searches the parameter in all 
@@ -425,7 +431,7 @@ package me.markezine.lazyloader.core {
 		}
 		
 		/**
-		 * You can use this method to retrieve a </code>Sound</code> object that matches the 
+		 * You can use this method to retrieve a <code>Sound</code> object that matches the 
 		 * properties of the parameters object. You can also use a string to match the item id or 
 		 * url. Please note that if there are more than one item with the same parameters, it will
 		 * return the last added item. If called on the class, searches the parameter in all 
@@ -451,7 +457,7 @@ package me.markezine.lazyloader.core {
 		}
 		
 		/**
-		 * You can use this method to retrieve a </code>NetStream</code> or <code>Sound</code>
+		 * You can use this method to retrieve a <code>NetStream</code> or <code>Sound</code>
 		 * metadata that match the properties of the parameters object. You can also use a string 
 		 * to match the item id or url. Please note that if there are more than one item with the 
 		 * same parameters, it will return the last added item. 
@@ -481,7 +487,7 @@ package me.markezine.lazyloader.core {
 		}
 		
 		/**
-		 * You can use this method to retrieve a </code>Sprite</code> that matches the properties 
+		 * You can use this method to retrieve a <code>Sprite</code> that matches the properties 
 		 * of the parameters object. You can also use a string to match the item id or url.
 		 * Please note that if there are more than one item with the same parameters, it will
 		 * return the last added item.
@@ -508,7 +514,7 @@ package me.markezine.lazyloader.core {
 		}
 		
 		/**
-		 * You can use this method to retrieve a </code>MovieClip</code> that matches the properties 
+		 * You can use this method to retrieve a <code>MovieClip</code> that matches the properties 
 		 * of the parameters object. You can also use a string to match the item id or url.
 		 * Please note that if there are more than one item with the same parameters, it will
 		 * return the last added item.
@@ -532,7 +538,7 @@ package me.markezine.lazyloader.core {
 		}
 		
 		/**
-		 * You can use this method to retrieve a </code>Bitmap</code> that matches the properties 
+		 * You can use this method to retrieve a <code>Bitmap</code> that matches the properties 
 		 * of the parameters object. You can also use a string to match the item id or url.
 		 * Please note that if there are more than one item with the same parameters, it will
 		 * return the last added item.
@@ -559,7 +565,7 @@ package me.markezine.lazyloader.core {
 		}
 		
 		/**
-		 * You can use this method to retrieve a </code>BitmapData</code> that matches the 
+		 * You can use this method to retrieve a <code>BitmapData</code> that matches the 
 		 * properties of the parameters object. You can also use a string to match the item id or 
 		 * url. Please note that if there are more than one item with the same parameters, it will
 		 * return the last added item.

@@ -41,13 +41,37 @@
 
 package me.markezine.lazyloader.core
 {
+	
+	/**
+	 * The LazyLoaderStatus class provides  values for the LazyLoader.status and the 
+	 * LazyLoaderItem.status properties.
+	 * 
+	 */
 	public class LazyLoaderStatus
 	{
+		/**
+		 * When the LazyLoader or the LazyLoaderItem is ready to start. 
+		 */
 		public static const WAITING:String = "waiting";
+		/**
+		 * When the LazyLoader or the LazyLoaderItem is in a loading process. 
+		 */
 		public static const LOADING:String = "loading";
+		/**
+		 * When the LazyLoader or LazyLoaderItem is completed.
+		 */
 		public static const COMPLETE:String = "complete";
+		/**
+		 * When the LazyLoader is paused. This status is never used in LazyLoaderItem.
+		 */
 		public static const PAUSED:String = "paused";
+		/**
+		 * When the LazyLoader or the LazyLoaderItem is canceled. 
+		 */
 		public static const CANCELED:String = "canceled";
+		/**
+		 * When the LazyLoaderItem didn't finish because of an error. 
+		 */
 		public static const ERROR:String = "error";
 	}
 }

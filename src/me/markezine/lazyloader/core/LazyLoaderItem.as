@@ -80,6 +80,17 @@ package me.markezine.lazyloader.core {
 	[Event(name="bufferFull", type="me.markezine.lazyloader.events.LazyLoaderMediaEvent")]
 	[Event(name="lazyloaderError", type="me.markezine.lazyloader.events.LazyLoaderErrorEvent")]
 	
+	/**
+	 * The LazyLoaderItem class is a universal loading class for all types of data.
+	 * It can be used in the <code>LazyLoader</code> queue, or can be used by itself to load 
+	 * a single file.
+	 * @param request The request to be loaded. It can be either a <code>URLRequest</code> or a
+	 * string containing the url of the file to be loaded.
+	 * @param attributes Attributes that can specified to add special parameters to the loading 
+	 * process. There is a <code>LazyLoaderVariables</code> class with the default parameters 
+	 * that you can use to create items as well.
+	 * 
+	 */
 	public class LazyLoaderItem extends EventDispatcher
 	{  
 		internal var instance:String;

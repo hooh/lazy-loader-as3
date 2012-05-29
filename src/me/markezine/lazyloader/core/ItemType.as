@@ -40,6 +40,10 @@
  */
 package me.markezine.lazyloader.core
 {
+	/**
+	 * The ItemType class can be used to define the type of file you are loading.
+	 * 
+	 */
 	public class ItemType
 	{
 		/**
