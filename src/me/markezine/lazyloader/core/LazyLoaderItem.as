@@ -123,6 +123,7 @@ package me.markezine.lazyloader.core {
 			if (!params) params = {};
 			if (params is String) params = {id:params};
 			if(params is LazyLoaderVariables) params = LazyLoaderVariables(params).toObject();
+			_context = params.context;
 			_request = LazyLoaderUtils.getRequest(request);
 			_relativeUrl = _request.url;
 			_absoluteUrl = LazyLoaderUtils.getAbsoluteUrl(_relativeUrl);

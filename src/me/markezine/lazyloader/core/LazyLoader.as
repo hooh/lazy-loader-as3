@@ -47,6 +47,8 @@ package me.markezine.lazyloader.core {
 	import flash.events.EventDispatcher;
 	import flash.media.Sound;
 	import flash.net.NetStream;
+	import flash.system.ApplicationDomain;
+	import flash.system.SecurityDomain;
 	import flash.utils.Dictionary;
 	
 	import me.markezine.lazyloader.events.LazyLoaderEvent;
@@ -66,6 +68,9 @@ package me.markezine.lazyloader.core {
 	
 	public class LazyLoader extends EventDispatcher
 	{
+		public static var defaultApplicationDomain:ApplicationDomain = null;
+		public static var defaultSecurityDomain:SecurityDomain = null;
+		
 		private static var instances:Dictionary = new Dictionary();
 		private static var items:ItemList = new ItemList();
 		

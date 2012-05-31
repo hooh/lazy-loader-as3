@@ -65,7 +65,7 @@ package me.markezine.lazyloader.core
 			if(_status!=LazyLoaderStatus.WAITING && status != LazyLoaderStatus.CANCELED && status!=LazyLoaderStatus.ERROR) return;
 			_status = LazyLoaderStatus.LOADING;
 			this.request = request;
-			if(!context) context = new LoaderContext(true);
+			if(!context) context = new LoaderContext(true, LazyLoader.defaultApplicationDomain, LazyLoader.defaultSecurityDomain);
 			super.load(request, LoaderContext(context));
 			addInternalHandlers();
 		}
