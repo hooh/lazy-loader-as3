@@ -127,6 +127,23 @@ package me.markezine.lazyloader.core {
 			return Boolean(instances[id]);
 		}
 		
+		
+		/**
+		 * @inheritDoc 
+		 * 
+		 */
+		static public function addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:uint = 0, useWeakReference:Boolean = true):void{
+			getInstance().addEventListener(type, listener, useCapture, priority, useWeakReference);
+		}
+		
+		/**
+		 * @inheritDoc 
+		 * 
+		 */
+		static public function removeEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:uint = 0, useWeakReference:Boolean = true):void{
+			getInstance().addEventListener(type, listener, useCapture, priority, useWeakReference);
+		}
+		
 		/**
 		 * Adds a item to the loading queue. If called on the class adds to the default instance.
 		 * @param request The request to be loaded. It can be either a <code>URLRequest</code> or a
@@ -184,7 +201,7 @@ package me.markezine.lazyloader.core {
 		/**
 		 * @private
 		 */
-		static public function start(getSizeFirst:Boolean):void{
+		static public function start(getSizeFirst:Boolean = true):void{
 			getInstance().start(getSizeFirst);
 		}
 		
