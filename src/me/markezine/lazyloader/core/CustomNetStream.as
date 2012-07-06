@@ -41,20 +41,15 @@
 
 package me.markezine.lazyloader.core
 {
-	import flash.errors.IOError;
-	import flash.events.AsyncErrorEvent;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.NetStatusEvent;
-	import flash.events.ProgressEvent;
 	import flash.events.TimerEvent;
-	import flash.external.ExternalInterface;
 	import flash.media.SoundTransform;
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
 	import flash.net.NetStreamPlayOptions;
 	import flash.net.URLRequest;
-	import flash.text.TextFormat;
 	import flash.utils.ByteArray;
 	import flash.utils.Timer;
 	

@@ -42,9 +42,6 @@
 package me.markezine.lazyloader.core
 {	
 	import flash.utils.Dictionary;
-	import flash.xml.XMLDocument;
-	import flash.xml.XMLNode;
-	import flash.xml.XMLNodeType;
 
 	internal class ItemList
 	{

@@ -48,6 +48,7 @@ package me.markezine.lazyloader.core
 	import flash.net.URLRequest;
 	import flash.system.LoaderContext;
 	import flash.utils.ByteArray;
+	import flash.utils.Dictionary;
 	
 	import me.markezine.lazyloader.events.LazyLoaderErrorEvent;
 	import me.markezine.lazyloader.events.LazyLoaderEvent;
@@ -57,13 +58,17 @@ package me.markezine.lazyloader.core
 		private var request:URLRequest;
 		private var _status:String = LazyLoaderStatus.WAITING;
 		
+		private var listeners:Dictionary;
+		
 		public function CustomLoader(){
 			super();
+			listeners = new Dictionary();
 		}
 		
 		public function lazyLoad(request:URLRequest, context:Object=null):void{
 			if(_status!=LazyLoaderStatus.WAITING && status != LazyLoaderStatus.CANCELED && status!=LazyLoaderStatus.ERROR) return;
 			_status = LazyLoaderStatus.LOADING;
+			if(!listeners) listeners = new Dictionary();
 			this.request = request;
 			if(!context) context = new LoaderContext(true, LazyLoader.defaultApplicationDomain, LazyLoader.defaultSecurityDomain);
 			super.load(request, LoaderContext(context));
@@ -133,9 +138,18 @@ package me.markezine.lazyloader.core
 					break;
 			}
 			super.addEventListener(type, listener, useCapture, priority, useWeakReference);
+			
+			if(!listeners[type]){
+				listeners[type] = [listener];
+			}else if(listeners[type] && listeners[type].indexOf(listener) == -1){
+				listeners[type].push(listener);
+			}
 		}
 		
 		override public function removeEventListener(type:String, listener:Function, useCapture:Boolean=false):void{
+			if(listeners[type] && listeners[type].indexOf(listener) > -1){
+				listeners[type].splice(listeners[type].indexOf(listener), 1);
+			}
 			switch(type){
 				case Event.COMPLETE:
 				case Event.INIT:
@@ -144,7 +158,7 @@ package me.markezine.lazyloader.core
 				case HTTPStatusEvent.HTTP_STATUS:
 				case IOErrorEvent.IO_ERROR:
 				case ProgressEvent.PROGRESS:
-					contentLoaderInfo.removeEventListener(type, dispatchEvent, useCapture);
+					if(listeners[type].length == 0) contentLoaderInfo.removeEventListener(type, dispatchEvent, useCapture);
 					break;
 			}
 			super.removeEventListener(type, listener, useCapture);

@@ -52,15 +52,12 @@ package me.markezine.lazyloader.core {
 	import flash.events.SecurityErrorEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
-	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 	
 	import me.markezine.lazyloader.events.LazyLoaderErrorEvent;
 	import me.markezine.lazyloader.events.LazyLoaderEvent;
 	import me.markezine.lazyloader.events.LazyLoaderMediaEvent;
 	import me.markezine.lazyloader.interfaces.ICustomLoader;
-	
-	import mx.events.Request;
 	
 	[Event(name="init", type="flash.events.Event")]
 	[Event(name="unload", type="flash.events.Event")]
@@ -105,7 +102,7 @@ package me.markezine.lazyloader.core {
 		private var _relativeUrl:String = "";
 		private var _absoluteUrl:String = "";
 		private var _useAbsoluteURL:Boolean = true;
-		private var _addedEvents:Dictionary;
+		private var listeners:Dictionary;
 		
 		/**
 		 * The LazyLoaderItem class is a universal loading class for all types of data.
@@ -129,7 +126,7 @@ package me.markezine.lazyloader.core {
 			_absoluteUrl = LazyLoaderUtils.getAbsoluteUrl(_relativeUrl);
 			_type = LazyLoaderUtils.getItemType(params.forceType || _request.url);
 			_loader = LazyLoaderUtils.createLoader(_type);
-			_addedEvents = new Dictionary();
+			listeners = new Dictionary();
 			_params = params;
 		}
 		
@@ -158,7 +155,13 @@ package me.markezine.lazyloader.core {
 					_loader.addEventListener(type, dispatchEvent, useCapture, priority, useWeakReference);
 				break;
 			}
-			_addedEvents[type] = {useCapture:useCapture, priority:priority, useWeakReference:useWeakReference};
+			
+			if(!listeners[type]) {
+				listeners[type] = [listener];
+			}else{
+				listeners[type].push(listener);
+			}
+			
 			super.addEventListener(type, listener, useCapture, priority, useWeakReference);
 		}
 		
@@ -167,6 +170,10 @@ package me.markezine.lazyloader.core {
 		 * 
 		 */
 		override public function removeEventListener(type:String, listener:Function, useCapture:Boolean=false):void{
+			if(listeners[type] && listeners[type].indexOf(listener) > -1){
+				listeners[type].splice(listeners[type].indexOf(listener), 1);
+			}
+			
 			switch(type){
 				case Event.INIT:
 				case Event.OPEN:
@@ -184,10 +191,10 @@ package me.markezine.lazyloader.core {
 				case LazyLoaderEvent.CANCELED:
 				case LazyLoaderMediaEvent.METADATA_RECEIVED:
 				case LazyLoaderMediaEvent.BUFFER_FULL:
-					_loader.removeEventListener(type, dispatchEvent, useCapture);
+					if(listeners[type].length == 0) _loader.removeEventListener(type, dispatchEvent, useCapture);
 					break;
 			}
-			delete _addedEvents[type];
+			
 			super.removeEventListener(type, listener, useCapture);
 		}
 		
@@ -237,9 +244,9 @@ package me.markezine.lazyloader.core {
 			if(_useAbsoluteURL) _request.url = _absoluteUrl;
 			if(type == ItemType.AUDIO && (_loader.status == LazyLoaderStatus.CANCELED || _loader.status == LazyLoaderStatus.ERROR)){
 				var i:String;
-				for(i in _addedEvents) _loader.removeEventListener(i, dispatchEvent,_addedEvents[i].useCapture);
+				for(i in listeners) _loader.removeEventListener(i, dispatchEvent,listeners[i].useCapture);
 				_loader = LazyLoaderUtils.createLoader(type);
-				for(i in _addedEvents) _loader.addEventListener(i, dispatchEvent,_addedEvents[i].useCapture, _addedEvents[i].priority, _addedEvents[i].useWeakReference );
+				for(i in listeners) _loader.addEventListener(i, dispatchEvent,listeners[i].useCapture, listeners[i].priority, listeners[i].useWeakReference );
 			}
 			_loader.lazyLoad(_request, _context);
 		}

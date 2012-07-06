@@ -41,10 +41,7 @@
 package me.markezine.lazyloader.core
 {
 	import flash.events.Event;
-	import flash.events.HTTPStatusEvent;
 	import flash.events.IOErrorEvent;
-	import flash.events.SampleDataEvent;
-	import flash.events.SecurityErrorEvent;
 	import flash.media.Sound;
 	import flash.media.SoundLoaderContext;
 	import flash.net.URLRequest;

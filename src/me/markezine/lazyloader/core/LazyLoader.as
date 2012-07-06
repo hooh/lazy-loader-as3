@@ -51,6 +51,7 @@ package me.markezine.lazyloader.core {
 	import flash.system.SecurityDomain;
 	import flash.utils.Dictionary;
 	
+	import me.markezine.lazyloader.events.LazyLoaderErrorEvent;
 	import me.markezine.lazyloader.events.LazyLoaderEvent;
 	
 	/**
@@ -70,6 +71,7 @@ package me.markezine.lazyloader.core {
 	{
 		public static var defaultApplicationDomain:ApplicationDomain = null;
 		public static var defaultSecurityDomain:SecurityDomain = null;
+		public static var debugMode:String = LazyLoaderDebugModes.ERRORS;
 		
 		private static var instances:Dictionary = new Dictionary();
 		private static var items:ItemList = new ItemList();
@@ -85,6 +87,7 @@ package me.markezine.lazyloader.core {
 		private var _started:Boolean = false;
 		private var _maxConnections:Number = 4;
 		private var _destroyed:Boolean = false;
+		public var debugMode:String = "";
 		
 		/**
 		 * The <code>LazyLoader</code> class is a loading queue that manages loading multiple 
@@ -98,6 +101,7 @@ package me.markezine.lazyloader.core {
 			instances[id] = this;
 			_id = id;
 			_status = LazyLoaderStatus.WAITING;
+			this.debugMode = LazyLoader.debugMode;
 			
 			added = new Vector.<String>();
 			waiting = new Vector.<String>();
@@ -157,7 +161,7 @@ package me.markezine.lazyloader.core {
 		 * @see LazyLoaderItem
 		 * @see LazyLoaderVariables
 		 */
-		public function add(request:Object, attributes:Object):LazyLoaderItem{
+		public function add(request:Object, attributes:Object = null):LazyLoaderItem{
 			var item:LazyLoaderItem = new LazyLoaderItem(request, attributes);
 			item.instance = id;
 			item.uniqueId = items.addItem(item);
@@ -172,13 +176,16 @@ package me.markezine.lazyloader.core {
 			}
 			
 			queue.push(item.uniqueId);
+			
+			LazyLoaderDebugger.debug(this, LazyLoaderDebugModes.ADD, item);
+			
 			return item;
 		}
 		
 		/**
 		 * @private
 		 */
-		static public function add(request:Object, attributes:Object):LazyLoaderItem{
+		static public function add(request:Object, attributes:Object = null):LazyLoaderItem{
 			return getInstance().add(request, attributes);
 		}
 		
@@ -308,6 +315,7 @@ package me.markezine.lazyloader.core {
 					_status = LazyLoaderStatus.LOADING;
 					item.addEventListener(LazyLoaderEvent.PROGRESS, itemListener);
 					item.addEventListener(LazyLoaderEvent.COMPLETE, itemListener);
+					item.addEventListener(LazyLoaderErrorEvent.LAZYLOADER_ERROR, itemListener);
 					item.addEventListener(LazyLoaderEvent.CANCELED, itemListener);
 					
 					LazyLoaderUtils.removeFromVector(added, item.uniqueId);
@@ -319,6 +327,8 @@ package me.markezine.lazyloader.core {
 					dispatchEvent(new LazyLoaderEvent(LazyLoaderEvent.PROGRESS, bytesLoaded, bytesTotal));
 					break;
 				
+				case LazyLoaderErrorEvent.LAZYLOADER_ERROR:
+					LazyLoaderDebugger.debug(this, LazyLoaderDebugModes.ERRORS, item);
 				case LazyLoaderEvent.COMPLETE:
 					item.removeEventListener(Event.OPEN, itemListener);
 					item.removeEventListener(LazyLoaderEvent.PROGRESS, itemListener);
@@ -418,7 +428,7 @@ package me.markezine.lazyloader.core {
 		/**
 		 * @private
 		 */
-		static public function getXML(parameters:Object):String{
+		static public function getXML(parameters:Object):XML{
 			var item:LazyLoaderItem = LazyLoader.getItem(parameters);
 			try{
 				return new XML(item.data);
