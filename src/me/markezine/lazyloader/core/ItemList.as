@@ -84,7 +84,7 @@ package me.markezine.lazyloader.core
 			if(instance) filteredList = filteredList.(@instanceId == instance);
 			if(type) filteredList = filteredList.(@type == type);
 			
-			if(parameters is String){
+			if(parameters != "undefined" && parameters is String && String(parameters).length > 0){
 				return getItem(String(filteredList.(@id == parameters || @url == parameters || @absoluteURL == parameters)[0]));
 			}
 			
@@ -92,7 +92,7 @@ package me.markezine.lazyloader.core
 				filteredList = filteredList.(attribute(i) == parameters[i]);
 			}
 			
-			return getItem(String(filteredList[0]));
+			return filteredList.length() > 0 ? getItem(String(filteredList[0])) : null;
 		}
 		
 		

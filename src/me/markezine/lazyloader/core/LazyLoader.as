@@ -144,8 +144,8 @@ package me.markezine.lazyloader.core {
 		 * @inheritDoc 
 		 * 
 		 */
-		static public function removeEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:uint = 0, useWeakReference:Boolean = true):void{
-			getInstance().addEventListener(type, listener, useCapture, priority, useWeakReference);
+		static public function removeEventListener(type:String, listener:Function, useCapture:Boolean = false):void{
+			getInstance().removeEventListener(type, listener, useCapture);
 		}
 		
 		/**
@@ -328,7 +328,7 @@ package me.markezine.lazyloader.core {
 					break;
 				
 				case LazyLoaderErrorEvent.LAZYLOADER_ERROR:
-					LazyLoaderDebugger.debug(this, LazyLoaderDebugModes.ERRORS, item);
+					LazyLoaderDebugger.debug(this, LazyLoaderDebugModes.ERRORS, item, LazyLoaderErrorEvent(event).originalEvent.type);
 				case LazyLoaderEvent.COMPLETE:
 					item.removeEventListener(Event.OPEN, itemListener);
 					item.removeEventListener(LazyLoaderEvent.PROGRESS, itemListener);

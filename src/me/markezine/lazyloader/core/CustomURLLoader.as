@@ -104,7 +104,7 @@ package me.markezine.lazyloader.core
 					break;
 				
 				case HTTPStatusEvent.HTTP_STATUS:
-					if(HTTPStatusEvent(event).status < 200 || HTTPStatusEvent(event).status > 399){  
+					if(HTTPStatusEvent(event).status != 0 && (HTTPStatusEvent(event).status < 200 || HTTPStatusEvent(event).status > 399)){
 						dispatchEvent(new LazyLoaderErrorEvent(LazyLoaderErrorEvent.LAZYLOADER_ERROR, event));
 					}
 					break;

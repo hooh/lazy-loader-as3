@@ -2,13 +2,24 @@ package me.markezine.lazyloader.core
 {
 	internal class LazyLoaderDebugger
 	{
-		static internal function debug(loader:LazyLoader, type:String, item:LazyLoaderItem):void{
+		static internal function debug(loader:LazyLoader, type:String, item:LazyLoaderItem, additionalInfo:Object=null):void{
 			if(!loader && LazyLoader.debugMode.indexOf(type) == -1){
 				return;
 			}else if(loader && loader.debugMode.indexOf(type) == -1){
 				return;
 			} 
-			trace("LazyLoader action: ", type, item.url);
+			
+			switch(type){
+				case LazyLoaderDebugModes.ADD:
+					trace("LazyLoader action: ", type, item.url);
+					break;
+				
+				case LazyLoaderDebugModes.ERRORS:
+					trace("LazyLoader action: ", "error", "relative: ", item.url, "absolute: ", 
+						item.absoluteUrl, "errorType: ", additionalInfo);
+					break;
+			}
+			
 		}
 	}
 }
