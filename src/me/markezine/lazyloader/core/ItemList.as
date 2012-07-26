@@ -75,16 +75,17 @@ package me.markezine.lazyloader.core
 		}
 		
 		public function getItem(parameters:Object, instance:String = null, type:String = null):LazyLoaderItem{
+			if(parameters == "undefined") return null;
+			
 			if(parameters is String && items[parameters]){
 				return items[parameters];
 			}
-			
 			var filteredList:XMLList = xml..item;
 			
 			if(instance) filteredList = filteredList.(@instanceId == instance);
 			if(type) filteredList = filteredList.(@type == type);
 			
-			if(parameters != "undefined" && parameters is String && String(parameters).length > 0){
+			if(parameters is String && String(parameters).length > 0){
 				return getItem(String(filteredList.(@id == parameters || @url == parameters || @absoluteURL == parameters)[0]));
 			}
 			

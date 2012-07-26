@@ -51,6 +51,7 @@ package me.markezine.lazyloader.core {
 	import flash.events.SampleDataEvent;
 	import flash.events.SecurityErrorEvent;
 	import flash.net.URLLoader;
+	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
 	import flash.utils.Dictionary;
 	
@@ -272,7 +273,9 @@ package me.markezine.lazyloader.core {
 		 * @see data
 		 */
 		public function get content():Object{
-			if(loader is URLLoader){
+			if(loader is CustomURLLoader && URLLoader(loader).dataFormat == URLLoaderDataFormat.BINARY){
+				return CustomURLLoader(loader).bytes;
+			}else if(loader is URLLoader){
 				return URLLoader(loader).data;
 			}else if(loader is Loader){
 				return Loader(loader).content;

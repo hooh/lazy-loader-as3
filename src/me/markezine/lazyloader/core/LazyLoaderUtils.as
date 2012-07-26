@@ -42,6 +42,7 @@
 package me.markezine.lazyloader.core
 {
 	import flash.external.ExternalInterface;
+	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
 	
 	import me.markezine.lazyloader.interfaces.ICustomLoader;
@@ -83,6 +84,9 @@ package me.markezine.lazyloader.core
 					
 				case "mp3":
 					return ItemType.AUDIO;
+					
+				case "3ds":
+					return ItemType.BINARY;
 			}
 			return ItemType.TEXT;
 		}
@@ -124,6 +128,12 @@ package me.markezine.lazyloader.core
 				
 				case ItemType.AUDIO:
 					return new CustomSound();
+					break;
+				
+				case ItemType.BINARY:
+					var urlLoader:CustomURLLoader = new CustomURLLoader();
+					urlLoader.dataFormat = URLLoaderDataFormat.BINARY;
+					return urlLoader;
 					break;
 			}
 			return new CustomURLLoader();

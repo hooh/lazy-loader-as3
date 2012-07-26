@@ -49,6 +49,7 @@ package me.markezine.lazyloader.core {
 	import flash.net.NetStream;
 	import flash.system.ApplicationDomain;
 	import flash.system.SecurityDomain;
+	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 	
 	import me.markezine.lazyloader.events.LazyLoaderErrorEvent;
@@ -380,6 +381,33 @@ package me.markezine.lazyloader.core {
 		}
 		
 		/**
+		 * You can use this method to retrieve a <code>ByteArray</code> data that matches the 
+		 * properties of the parameters object. You can also use a string to match the item id or 
+		 * url. Please note that if there are more than one item with the same parameters, it will
+		 * return the last added item.
+		 * If the item is not binary, it will return <code>null</code>.
+		 * If called on the class, searches the parameter in all 
+		 * instances.
+		 * @param parameters The search parameters to get the item.
+		 * @return The <code>ByteArray</code> matching the current parameters. 
+		 * 
+		 */
+		public function getByteArray(parameters:Object):ByteArray{
+			var item:LazyLoaderItem = this.getItem(parameters);
+			if(item.data is ByteArray) return ByteArray(item.data);
+			return null;
+		}
+		
+		/**
+		 * @private
+		 */
+		static public function getByteArray(parameters:Object):ByteArray{
+			var item:LazyLoaderItem = LazyLoader.getItem(parameters);
+			if(item.data is ByteArray) return ByteArray(item.data);
+			return null;
+		}
+		
+		/**
 		 * You can use this method to retrieve a <code>String</code> data that matches the 
 		 * properties of the parameters object. You can also use a string to match the item id or 
 		 * url. Please note that if there are more than one item with the same parameters, it will
@@ -449,7 +477,7 @@ package me.markezine.lazyloader.core {
 		 */
 		public function getNetStream(parameters:Object):NetStream{
 			var item:LazyLoaderItem = this.getItem(parameters);
-			if(item.content is NetStream) return NetStream(item.content);
+			if(item && item.content is NetStream) return NetStream(item.content);
 			return null;
 		}
 		
@@ -458,7 +486,7 @@ package me.markezine.lazyloader.core {
 		 */
 		static public function getNetStream(parameters:Object):NetStream{
 			var item:LazyLoaderItem = LazyLoader.getItem(parameters);
-			if(item.content is NetStream) return NetStream(item.content);
+			if(item && item.content is NetStream) return NetStream(item.content);
 			return null;
 		}
 		
@@ -475,7 +503,7 @@ package me.markezine.lazyloader.core {
 		 */
 		public function getSound(parameters:Object):Sound{
 			var item:LazyLoaderItem = this.getItem(parameters);
-			if(item.content is Sound) return Sound(item.content);
+			if(item && item.content is Sound) return Sound(item.content);
 			return null;
 		}
 		
@@ -484,7 +512,7 @@ package me.markezine.lazyloader.core {
 		 */
 		static public function getSound(parameters:Object):Sound{
 			var item:LazyLoaderItem = LazyLoader.getItem(parameters);
-			if(item.content is Sound) return Sound(item.content);
+			if(item && item.content is Sound) return Sound(item.content);
 			return null;
 		}
 		
@@ -502,8 +530,8 @@ package me.markezine.lazyloader.core {
 		 */
 		public function getMetadata(parameters:Object):Object{
 			var item:LazyLoaderItem = this.getItem(parameters);
-			if(item.content is Sound) return Sound(item.content).id3;
-			if(item.content is CustomNetStream) return CustomNetStream(item.content).metadata;
+			if(item && item.content is Sound) return Sound(item.content).id3;
+			if(item && item.content is CustomNetStream) return CustomNetStream(item.content).metadata;
 			return null;
 		}
 		
@@ -513,8 +541,8 @@ package me.markezine.lazyloader.core {
 		 */
 		static public function getMetadata(parameters:Object):Object{
 			var item:LazyLoaderItem = LazyLoader.getItem(parameters);
-			if(item.content is Sound) return Sound(item.content).id3;
-			if(item.content is CustomNetStream) return CustomNetStream(item.content).metadata;
+			if(item && item.content is Sound) return Sound(item.content).id3;
+			if(item && item.content is CustomNetStream) return CustomNetStream(item.content).metadata;
 			return null;
 		}
 		
@@ -532,7 +560,7 @@ package me.markezine.lazyloader.core {
 		 */
 		public function getSprite(parameters:Object):Sprite{
 			var item:LazyLoaderItem = this.getItem(parameters);
-			if(item.content is Sprite) return Sprite(item.content);
+			if(item && item.content is Sprite) return Sprite(item.content);
 			return null;
 		}
 		
@@ -541,7 +569,7 @@ package me.markezine.lazyloader.core {
 		 */
 		static public function getSprite(parameters:Object):Sprite{
 			var item:LazyLoaderItem = LazyLoader.getItem(parameters);
-			if(item.content is Sprite) return Sprite(item.content);
+			if(item && item.content is Sprite) return Sprite(item.content);
 			return null;
 		}
 		
@@ -559,13 +587,13 @@ package me.markezine.lazyloader.core {
 		 */
 		public function getMovieClip(parameters:Object):MovieClip{
 			var item:LazyLoaderItem = this.getItem(parameters);
-			if(item.content is MovieClip) return MovieClip(item.content);
+			if(item && item.content is MovieClip) return MovieClip(item.content);
 			return null;
 		}
 		
 		static public function getMovieClip(parameters:Object):MovieClip{
 			var item:LazyLoaderItem = LazyLoader.getItem(parameters);
-			if(item.content is MovieClip) return MovieClip(item.content);
+			if(item && item.content is MovieClip) return MovieClip(item.content);
 			return null;
 		}
 		
@@ -583,7 +611,7 @@ package me.markezine.lazyloader.core {
 		 */
 		public function getBitmap(parameters:Object):Bitmap{
 			var item:LazyLoaderItem = this.getItem(parameters);
-			if(item.content is Bitmap) return Bitmap(item.content);
+			if(item && item.content is Bitmap) return Bitmap(item.content);
 			return null;
 		}
 		
@@ -592,7 +620,7 @@ package me.markezine.lazyloader.core {
 		 */
 		static public function getBitmap(parameters:Object):Bitmap{
 			var item:LazyLoaderItem = LazyLoader.getItem(parameters);
-			if(item.content is Bitmap) return Bitmap(item.content);
+			if(item && item.content is Bitmap) return Bitmap(item.content);
 			return null;
 		}
 		
@@ -609,7 +637,7 @@ package me.markezine.lazyloader.core {
 		 */
 		public function getBitmapData(parameters:Object):BitmapData{
 			var item:LazyLoaderItem = this.getItem(parameters);
-			if(item.content is Bitmap) return Bitmap(item.content).bitmapData.clone();
+			if(item && item.content is Bitmap) return Bitmap(item.content).bitmapData.clone();
 			return null;
 		}
 		
@@ -619,7 +647,7 @@ package me.markezine.lazyloader.core {
 		 */
 		static public function getBitmapData(parameters:Object):BitmapData{
 			var item:LazyLoaderItem = LazyLoader.getItem(parameters);
-			if(item.content is Bitmap) return Bitmap(item.content).bitmapData.clone();
+			if(item && item.content is Bitmap) return Bitmap(item.content).bitmapData.clone();
 			return null;
 		}
 		
