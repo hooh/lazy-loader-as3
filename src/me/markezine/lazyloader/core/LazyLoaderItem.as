@@ -192,7 +192,7 @@ package me.markezine.lazyloader.core {
 				case LazyLoaderEvent.CANCELED:
 				case LazyLoaderMediaEvent.METADATA_RECEIVED:
 				case LazyLoaderMediaEvent.BUFFER_FULL:
-					if(listeners[type].length == 0) _loader.removeEventListener(type, dispatchEvent, useCapture);
+					if(listeners && listeners[type] && _loader && listeners[type].length == 0) _loader.removeEventListener(type, dispatchEvent, useCapture);
 					break;
 			}
 			

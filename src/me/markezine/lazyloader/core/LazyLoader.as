@@ -232,6 +232,7 @@ package me.markezine.lazyloader.core {
 				
 				LazyLoaderUtils.removeFromVector(loading, uniqueid);
 				LazyLoaderUtils.removeFromVector(added, uniqueid);
+				LazyLoaderUtils.removeFromVector(waiting, uniqueid);
 				LazyLoaderUtils.removeFromVector(queue, uniqueid);
 			}
 			
@@ -290,7 +291,6 @@ package me.markezine.lazyloader.core {
 			loading = null;
 			queue = null;
 		}
-		
 		
 		private function getSizes():void{
 			for(var i:String in queue){
@@ -357,6 +357,38 @@ package me.markezine.lazyloader.core {
 					if(_started) fillConnections();
 					break;
 			}
+		}
+		
+		/**
+		 * You can use this method to check if a item with the current parameters has been added.
+		 * You can also use a string to match the item id or url. If called on the class, searches 
+		 * the parameter in all instances.
+		 * @param parameters The search parameters to get the item.
+		 * @return the <code>Boolean</code> if the item has been added or not. 
+		 */
+		public function hasItem(parameters:Object):Boolean{
+			return Boolean(items.getItem(parameters, id));
+		}
+		
+		static public function hasItem(parameters:Object):Boolean{
+			return Boolean(items.getItem(parameters));
+		}
+		
+		/**
+		 * You can use this method to check if a item with the current parameters has been already 
+		 * loaded. You can also use a string to match the item id or url. If called on the class, 
+		 * searches the parameter in all instances. 
+		 * @param parameters The search parameters to get the item.
+		 * @return the <code>Boolean</code> if the item has been loaded or not. 
+		 */
+		public function isLoaded(parameters:Object):Boolean{
+			var item:LazyLoaderItem = items.getItem(parameters, id); 
+			return item && item.status == LazyLoaderStatus.COMPLETE;
+		}
+		
+		static public function isLoaded(parameters:Object):Boolean{
+			var item:LazyLoaderItem = items.getItem(parameters);
+			return item && item.status == LazyLoaderStatus.COMPLETE;
 		}
 		
 		/**

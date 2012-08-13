@@ -84,7 +84,9 @@ package me.markezine.lazyloader.core
 			_status = LazyLoaderStatus.CANCELED;
 			dispatchEvent(new LazyLoaderEvent(LazyLoaderEvent.CANCELED, loaded, total));
 			removeInternalHandlers();
+			try{
 			super.close();
+			}catch(e:Error){}
 		}
 		
 		public function destroy():void{
