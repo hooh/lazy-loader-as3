@@ -129,7 +129,8 @@ package me.markezine.lazyloader.core
 			super.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, internalHandler);
 		}
 		
-		public function get bytes():ByteArray { 
+		public function get bytes():ByteArray {
+			if(data is ByteArray) return data;
 			var bytesData:ByteArray = new ByteArray();
 			bytesData.writeUTFBytes(data);
 			return bytesData;
