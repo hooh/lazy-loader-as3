@@ -77,11 +77,11 @@ package me.markezine.lazyloader.core {
 		private static var instances:Dictionary = new Dictionary();
 		private static var items:ItemList = new ItemList();
 		
-		private var added:Vector.<String>;
-		private var waiting:Vector.<String>;
-		private var loading:Vector.<String>;
+		internal var added:Vector.<String>;
+		internal var waiting:Vector.<String>;
+		internal var loading:Vector.<String>;
 		
-		private var queue:Vector.<String>;
+		internal var queue:Vector.<String>;
 		
 		private var _id:String;
 		private var _status:String;
@@ -163,7 +163,13 @@ package me.markezine.lazyloader.core {
 		 * @see LazyLoaderVariables
 		 */
 		public function add(request:Object, attributes:Object = null):LazyLoaderItem{
-			var item:LazyLoaderItem = new LazyLoaderItem(request, attributes);
+			var item:LazyLoaderItem;
+			if(request is LazyLoaderItem){
+				item = LazyLoaderItem(request);
+			}else{
+				item = new LazyLoaderItem(request, attributes);
+			}
+			
 			item.instance = id;
 			item.uniqueId = items.addItem(item);
 			item.addEventListener(Event.OPEN, itemListener);
@@ -410,6 +416,12 @@ package me.markezine.lazyloader.core {
 		 */
 		static public function getItem(parameters:Object):LazyLoaderItem{
 			return items.getItem(parameters);
+		}
+		
+		//TODO: add items to group
+		public function getGroup(parameters:Object):LazyLoaderGroup{
+			var group:LazyLoaderGroup = new LazyLoaderGroup(this);
+			return group;
 		}
 		
 		/**

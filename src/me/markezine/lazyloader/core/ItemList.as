@@ -93,7 +93,7 @@ package me.markezine.lazyloader.core
 				filteredList = filteredList.(attribute(i) == parameters[i]);
 			}
 			
-			return filteredList.length() > 0 ? getItem(String(filteredList[0])) : null;
+			return filteredList.length() > 0 ? getItem(String(filteredList[filteredList.length()-1])) : null;
 		}
 		
 		
