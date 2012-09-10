@@ -219,7 +219,7 @@ package me.markezine.lazyloader.core {
 		/** 
 		 * This method can be used to retrieve the size of the file before loading it.
 		 */
-		public function getSize():void{
+		internal function getSize():void{
 			if(bytesTotal > 0){
 				dispatchEvent(new LazyLoaderEvent(LazyLoaderEvent.SIZE_COMPLETE, 0, bytesTotal));
 				return;
@@ -252,6 +252,13 @@ package me.markezine.lazyloader.core {
 			_loader.lazyLoad(_request, _context);
 		}
 		
+		/** 
+		 * Prioritize the current item in the loading queue.
+		 */
+		public function prioritize():void{
+			if(!instance) return;
+			LazyLoader.getInstance(instance).prioritize(uniqueId);
+		}
 		
 		/** 
 		 * Close the current load operation.

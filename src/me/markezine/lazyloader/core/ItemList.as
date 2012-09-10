@@ -42,6 +42,8 @@
 package me.markezine.lazyloader.core
 {	
 	import flash.utils.Dictionary;
+	
+	import mx.messaging.management.Attribute;
 
 	internal class ItemList
 	{
@@ -74,26 +76,37 @@ package me.markezine.lazyloader.core
 			return uniqueid;
 		}
 		
-		public function getItem(parameters:Object, instance:String = null, type:String = null):LazyLoaderItem{
-			if(parameters == "undefined") return null;
+		public function getItemList(parameters:Object, instance:String = null, type:String = null):Vector.<LazyLoaderItem>{
+			var list:Vector.<LazyLoaderItem> = new Vector.<LazyLoaderItem>();
 			
-			if(parameters is String && items[parameters]){
-				return items[parameters];
-			}
 			var filteredList:XMLList = xml..item;
 			
-			if(instance) filteredList = filteredList.(@instanceId == instance);
-			if(type) filteredList = filteredList.(@type == type);
+			if(parameters == "undefined") return list;
 			
-			if(parameters is String && String(parameters).length > 0){
-				return getItem(String(filteredList.(@id == parameters || @url == parameters || @absoluteURL == parameters)[0]));
+			if(instance) filteredList = filteredList.(attribute("instanceId") == instance);
+			if(type) filteredList = filteredList.(attribute("type") == type);
+			
+			if(parameters is String && String(parameters).length>0){
+				filteredList = filteredList.(text() == parameters || 
+					attribute("id") == parameters ||
+					attribute("url") == parameters ||
+					attribute("absoluteURL") == parameters);
+			}else{
+				for(var i:String in parameters){
+					filteredList = filteredList.(attribute(i) == parameters[i]);
+				}
 			}
 			
-			for(var i:String in parameters){
-				filteredList = filteredList.(attribute(i) == parameters[i]);
+			for each(var node:XML in filteredList){
+				list.push(items[String(node)]);
 			}
 			
-			return filteredList.length() > 0 ? getItem(String(filteredList[filteredList.length()-1])) : null;
+			return list;
+		}
+		
+		public function getItem(parameters:Object, instance:String = null, type:String = null):LazyLoaderItem{
+			var list:Vector.<LazyLoaderItem> = getItemList(parameters, instance, type);
+			return list.length > 0 ? list[list.length - 1] : null;
 		}
 		
 		

@@ -87,8 +87,14 @@ package me.markezine.lazyloader.core
 			item.addEventListener(LazyLoaderEvent.COMPLETE, progressListener);
 		}
 		
+		/**
+		 * This method can be used to prioritize all the items in the current group.
+		 */
+		public function prioritize():void{
+			if(loader) loader.prioritize(this);
+		}
+		
 		private function progressListener(event:LazyLoaderEvent):void{
-			if(!loader) return;
 			var loaded:uint = 0;
 			var total:uint = 0;
 			for each(var item:LazyLoaderItem in items){
@@ -125,7 +131,5 @@ package me.markezine.lazyloader.core
 		{
 			return _bytesLoaded;
 		}
-
-
 	}
 }

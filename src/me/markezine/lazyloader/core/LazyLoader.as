@@ -164,7 +164,12 @@ package me.markezine.lazyloader.core {
 		 */
 		public function add(request:Object, attributes:Object = null):LazyLoaderItem{
 			var item:LazyLoaderItem;
-			if(request is LazyLoaderItem){
+			if(request is LazyLoaderGroup){
+				for each(var groupItem:LazyLoaderItem in LazyLoaderGroup(request).items){
+					add(groupItem);
+				}
+				return null;
+			}else if(request is LazyLoaderItem){
 				item = LazyLoaderItem(request);
 			}else{
 				item = new LazyLoaderItem(request, attributes);
@@ -251,6 +256,54 @@ package me.markezine.lazyloader.core {
 		 */
 		static public function stop():void{
 			getInstance().stop();
+		}
+		
+		/**
+		 * Prioritize all the items that matches the current parameters. If the parameters have no match
+		 * or the matches have already been loaded, it does nothing. 
+		 * @param parameters The parameters that needs to match to prioritize a file.
+		 */
+		public function prioritize(parameters:Object):void{
+			var list:Vector.<LazyLoaderItem>;
+			
+			if(parameters is LazyLoaderGroup){
+				list = new Vector.<LazyLoaderItem>();
+				for each(var groupItem:LazyLoaderItem in LazyLoaderGroup(parameters)){
+					list.push(groupItem);
+				}
+			}else{
+				list = items.getItemList(parameters, id);
+			}
+			
+			var toBePrioritezed:Vector.<String> = new Vector.<String>();
+			for each(var item:LazyLoaderItem in list){
+				var itemIndex:Number = added.indexOf(item.uniqueId);
+				if(itemIndex > -1){
+					added.splice(itemIndex, 1);
+					toBePrioritezed.push(item.uniqueId);
+				}
+				
+				itemIndex = loading.indexOf(item.uniqueId);
+				if(itemIndex < -1){
+					loading.splice(itemIndex, 1);
+					toBePrioritezed.push(item.uniqueId);
+				}
+			}
+			
+			if(toBePrioritezed.length>0){
+				pause();
+				for each(var itemId:String in toBePrioritezed){
+					added.unshift(itemId);
+				}
+				start();
+			}
+		}
+		
+		/**
+		 * @private
+		 **/
+		public static function prioritize(parameters:Object):void{
+			getInstance().prioritize(parameters);
 		}
 		
 		/**
@@ -418,10 +471,28 @@ package me.markezine.lazyloader.core {
 			return items.getItem(parameters);
 		}
 		
-		//TODO: add items to group
+		/**
+		 * You can use this method to retrieve a <code>LazyLoaderGroup</code> that matches the 
+		 * properties of the parameters object. You can also use a string to match the items id or 
+		 * url. If called on the class, searches the parameter in default instance.
+		 * @param parameters The search parameters to get the item.
+		 * @return The <code>LazyLoaderGroup</code> matching the current parameters. 
+		 * @see LazyLoaderGroup
+		 */
 		public function getGroup(parameters:Object):LazyLoaderGroup{
 			var group:LazyLoaderGroup = new LazyLoaderGroup(this);
+			var list:Vector.<LazyLoaderItem> = items.getItemList(parameters, id);
+			for each(var item:LazyLoaderItem in list){
+				group.addItem(item);
+			}
 			return group;
+		}
+		
+		/**
+		 * @private
+		 */
+		static public function getGroup(parameters:Object):LazyLoaderGroup{
+			return getInstance().getGroup(parameters);
 		}
 		
 		/**
