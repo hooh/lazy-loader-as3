@@ -352,6 +352,10 @@ package me.markezine.lazyloader.core {
 		public function get status():String{ return loader.status; } 
 		
 		internal function get params():Object{ return _params; }
+		
+		override public function toString():String{
+			return "[LazyLoaderItem type=\"" + type + "\" status=\"" +status+"\"]";
+		}
 
 	}
 }

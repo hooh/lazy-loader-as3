@@ -61,8 +61,7 @@ package me.markezine.lazyloader.core
 			var uniqueid:String = LazyLoaderUtils.createUniqueId();
 			while(items[uniqueid] != null) uniqueid = LazyLoaderUtils.createUniqueId();
 			var node:XML = new XML(<item/>);
-			if(item.instance != "default") node.@instanceId = item.instance;
-			
+			node.@instanceId = item.instance;
 			node.@url = item.url;
 			node.@absoluteURL = item.absoluteUrl;
 			node.@type = item.type;
@@ -83,8 +82,10 @@ package me.markezine.lazyloader.core
 			
 			if(parameters == "undefined") return list;
 			
-			if(instance) filteredList = filteredList.(attribute("instanceId") == instance);
+			if(instance && instance!=null) filteredList = filteredList.(attribute("instanceId") == instance);
+			
 			if(type) filteredList = filteredList.(attribute("type") == type);
+			
 			
 			if(parameters is String && String(parameters).length>0){
 				filteredList = filteredList.(text() == parameters || 

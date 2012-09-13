@@ -110,10 +110,10 @@ package me.markezine.lazyloader.core
 			}
 			
 			_bytesLoaded = loaded;
-			_bytesTotal = loaded;
+			_bytesTotal = total;
 			
 			dispatchEvent(new LazyLoaderEvent(LazyLoaderEvent.PROGRESS, bytesLoaded, bytesTotal));
-			if(loaded > 0 && loaded >=total) dispatchEvent(new LazyLoaderEvent(LazyLoaderEvent.COMPLETE, bytesLoaded, bytesTotal));
+			if(event.type == LazyLoaderEvent.COMPLETE && loaded > 0 && loaded >=total) dispatchEvent(new LazyLoaderEvent(LazyLoaderEvent.COMPLETE, bytesLoaded, bytesTotal));
 		}
 		
 		/**

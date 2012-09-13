@@ -373,10 +373,10 @@ package me.markezine.lazyloader.core {
 			switch(event.type){
 				case Event.OPEN:
 					_status = LazyLoaderStatus.LOADING;
-					item.addEventListener(LazyLoaderEvent.PROGRESS, itemListener);
-					item.addEventListener(LazyLoaderEvent.COMPLETE, itemListener);
-					item.addEventListener(LazyLoaderErrorEvent.LAZYLOADER_ERROR, itemListener);
-					item.addEventListener(LazyLoaderEvent.CANCELED, itemListener);
+					item.addEventListener(LazyLoaderEvent.PROGRESS, itemListener, false, Number.MAX_VALUE - 1);
+					item.addEventListener(LazyLoaderEvent.COMPLETE, itemListener, false, Number.MAX_VALUE - 1);
+					item.addEventListener(LazyLoaderErrorEvent.LAZYLOADER_ERROR, itemListener, false, Number.MAX_VALUE - 1);
+					item.addEventListener(LazyLoaderEvent.CANCELED, itemListener, false, Number.MAX_VALUE - 1);
 					
 					LazyLoaderUtils.removeFromVector(added, item.uniqueId);
 					LazyLoaderUtils.removeFromVector(waiting, item.uniqueId);
