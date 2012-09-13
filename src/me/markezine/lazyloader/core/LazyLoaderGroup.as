@@ -131,5 +131,16 @@ package me.markezine.lazyloader.core
 		{
 			return _bytesLoaded;
 		}
+		
+		/**
+		 *  The status of the items being loaded. 
+		 */
+		public function get status():String{
+			for each(var item:LazyLoaderItem in items){
+				if(item.status == LazyLoaderStatus.LOADING ||
+				item.status == LazyLoaderStatus.WAITING) return item.status;
+			}
+			return LazyLoaderStatus.COMPLETE;
+		}
 	}
 }
