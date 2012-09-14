@@ -172,6 +172,7 @@ package me.markezine.lazyloader.core {
 			}else if(request is LazyLoaderItem){
 				item = LazyLoaderItem(request);
 			}else{
+				if(attributes is LazyLoaderVariables) LazyLoaderVariables(attributes).toObject(); 
 				item = new LazyLoaderItem(request, attributes);
 			}
 			

@@ -90,7 +90,6 @@ package me.markezine.lazyloader.core
 			result.context = this.context;
 			result.type = this.type;
 			result.forceType = this.type;
-			result.useWeakReference = this.useWeakReference;
 			
 			return result;
 		}
