@@ -95,9 +95,9 @@ package me.markezine.lazyloader.core
 		}
 		
 		private function addInternalHandlers():void{
-			contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, internalHandler, false, Number.MAX_VALUE);
-			contentLoaderInfo.addEventListener(HTTPStatusEvent.HTTP_STATUS, internalHandler, false, Number.MAX_VALUE);
-			contentLoaderInfo.addEventListener(Event.COMPLETE, internalHandler, false, Number.MAX_VALUE);
+			contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, internalHandler, false, int.MAX_VALUE);
+			contentLoaderInfo.addEventListener(HTTPStatusEvent.HTTP_STATUS, internalHandler, false, int.MAX_VALUE);
+			contentLoaderInfo.addEventListener(Event.COMPLETE, internalHandler,false, int.MAX_VALUE);
 		}
 		
 		private function internalHandler(event:Event):void{

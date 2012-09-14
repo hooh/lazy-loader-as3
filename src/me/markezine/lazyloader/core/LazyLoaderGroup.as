@@ -97,8 +97,10 @@ package me.markezine.lazyloader.core
 		private function progressListener(event:LazyLoaderEvent):void{
 			var loaded:uint = 0;
 			var total:uint = 0;
+			var complete:Boolean = true;
 			for each(var item:LazyLoaderItem in items){
 				if(loader.queue.indexOf(item.uniqueId) > -1){
+					if(item.status != LazyLoaderStatus.COMPLETE) complete = false;
 					loaded += item.bytesLoaded;
 					total += item.bytesTotal;
 				}
@@ -112,8 +114,8 @@ package me.markezine.lazyloader.core
 			_bytesLoaded = loaded;
 			_bytesTotal = total;
 			
-			dispatchEvent(new LazyLoaderEvent(LazyLoaderEvent.PROGRESS, bytesLoaded, bytesTotal));
-			if(event.type == LazyLoaderEvent.COMPLETE && loaded > 0 && loaded >=total) dispatchEvent(new LazyLoaderEvent(LazyLoaderEvent.COMPLETE, bytesLoaded, bytesTotal));
+			dispatchEvent(new LazyLoaderEvent(LazyLoaderEvent.PROGRESS, bytesLoaded, bytesTotal));	
+			if(complete) dispatchEvent(new LazyLoaderEvent(LazyLoaderEvent.COMPLETE, bytesLoaded, bytesTotal));
 		}
 		
 		/**
