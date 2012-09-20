@@ -226,6 +226,7 @@ package me.markezine.lazyloader.core {
 			}
 			var sizeGetter:ICustomLoader = LazyLoaderUtils.createLoader(_type);
 			sizeGetter.addEventListener(ProgressEvent.PROGRESS, sizeGetterListener);
+			if(_useAbsoluteURL) _request.url = absoluteUrl;
 			sizeGetter.lazyLoad(_request, _context);
 		}
 		
@@ -249,6 +250,7 @@ package me.markezine.lazyloader.core {
 				_loader = LazyLoaderUtils.createLoader(type);
 				for(i in listeners) _loader.addEventListener(i, dispatchEvent,listeners[i].useCapture, listeners[i].priority, listeners[i].useWeakReference );
 			}
+			
 			_loader.lazyLoad(_request, _context);
 		}
 		
