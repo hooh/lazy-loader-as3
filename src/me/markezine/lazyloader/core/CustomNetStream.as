@@ -183,6 +183,7 @@ package me.markezine.lazyloader.core
 		override public function resume():void{
 			super.soundTransform = _soundTransform;
 			super.resume();
+			_bufferOk = true;
 			_startPlaying = true;
 		}
 		

@@ -88,6 +88,7 @@ package me.markezine.lazyloader.core {
 		private var _started:Boolean = false;
 		private var _maxConnections:Number = 4;
 		private var _destroyed:Boolean = false;
+		private var _prevBytesLoaded:uint = 0;
 		public var debugMode:String = "";
 		
 		/**
@@ -350,6 +351,7 @@ package me.markezine.lazyloader.core {
 			waiting = null;
 			loading = null;
 			queue = null;
+			instances[_id] = null;
 		}
 		
 		private function getSizes():void{
@@ -385,7 +387,10 @@ package me.markezine.lazyloader.core {
 					break;
 				
 				case LazyLoaderEvent.PROGRESS:
-					dispatchEvent(new LazyLoaderEvent(LazyLoaderEvent.PROGRESS, bytesLoaded, bytesTotal));
+					if(bytesLoaded != _prevBytesLoaded){
+						_prevBytesLoaded = bytesLoaded;
+						dispatchEvent(new LazyLoaderEvent(LazyLoaderEvent.PROGRESS, bytesLoaded, bytesTotal));
+					}
 					break;
 				
 				case LazyLoaderErrorEvent.LAZYLOADER_ERROR:
@@ -462,14 +467,20 @@ package me.markezine.lazyloader.core {
 		 * @see LazyLoaderItem
 		 */
 		public function getItem(parameters:Object):LazyLoaderItem{
-			return items.getItem(parameters, id);
+			var item:LazyLoaderItem = items.getItem(parameters, id);
+			if(!item) LazyLoaderDebugger.debug(this, LazyLoaderDebugModes.ERRORS, item, 
+				"no matching item" + (parameters is String ? parameters : parameters.id || parameters.url)); 
+			return item;
 		}
 		
 		/**
 		 * @private
 		 */
 		static public function getItem(parameters:Object):LazyLoaderItem{
-			return items.getItem(parameters);
+			var item:LazyLoaderItem = items.getItem(parameters);
+			if(!item) LazyLoaderDebugger.debug(LazyLoader.getInstance(), LazyLoaderDebugModes.ERRORS, item, 
+				"no matching item" + (parameters is String ? parameters : parameters.id || parameters.url)); 
+			return item;
 		}
 		
 		/**
@@ -510,7 +521,7 @@ package me.markezine.lazyloader.core {
 		 */
 		public function getByteArray(parameters:Object):ByteArray{
 			var item:LazyLoaderItem = this.getItem(parameters);
-			if(item.data is ByteArray) return ByteArray(item.data);
+			if(item && item.data is ByteArray) return ByteArray(item.data);
 			return null;
 		}
 		
@@ -519,7 +530,7 @@ package me.markezine.lazyloader.core {
 		 */
 		static public function getByteArray(parameters:Object):ByteArray{
 			var item:LazyLoaderItem = LazyLoader.getItem(parameters);
-			if(item.data is ByteArray) return ByteArray(item.data);
+			if(item && item.data is ByteArray) return ByteArray(item.data);
 			return null;
 		}
 		

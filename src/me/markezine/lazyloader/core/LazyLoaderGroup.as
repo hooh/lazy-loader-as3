@@ -98,23 +98,28 @@ package me.markezine.lazyloader.core
 			var loaded:uint = 0;
 			var total:uint = 0;
 			var complete:Boolean = true;
-			for each(var item:LazyLoaderItem in items){
-				if(loader.queue.indexOf(item.uniqueId) > -1){
-					if(item.status != LazyLoaderStatus.COMPLETE) complete = false;
-					loaded += item.bytesLoaded;
-					total += item.bytesTotal;
-				}
-			}
 			
 			if(event.type == LazyLoaderEvent.COMPLETE){
 				event.currentTarget.removeEventListener(LazyLoaderEvent.PROGRESS, progressListener);
 				event.currentTarget.removeEventListener(LazyLoaderEvent.COMPLETE, progressListener);
 			}
 			
-			_bytesLoaded = loaded;
+			for each(var item:LazyLoaderItem in items){
+				if(loader.queue.indexOf(item.uniqueId) > -1){
+					if(item.status != LazyLoaderStatus.COMPLETE) complete = false;
+					loaded += item.bytesLoaded;
+					total += item.bytesTotal;
+					if(item.bytesTotal <= 0) return;
+				}
+			}
+			
 			_bytesTotal = total;
 			
-			dispatchEvent(new LazyLoaderEvent(LazyLoaderEvent.PROGRESS, bytesLoaded, bytesTotal));	
+			if(_bytesLoaded != loaded){
+				_bytesLoaded = loaded;
+				dispatchEvent(new LazyLoaderEvent(LazyLoaderEvent.PROGRESS, bytesLoaded, bytesTotal));
+			}
+			
 			if(complete) dispatchEvent(new LazyLoaderEvent(LazyLoaderEvent.COMPLETE, bytesLoaded, bytesTotal));
 		}
 		

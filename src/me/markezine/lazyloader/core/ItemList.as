@@ -66,8 +66,8 @@ package me.markezine.lazyloader.core
 			node.@absoluteURL = item.absoluteUrl;
 			node.@type = item.type;
 			node.setChildren(uniqueid);
-			for(var i:String in item.params){
-				node.@[i] = item.params[i];
+			for(var i:String in item.parameters){
+				node.@[i] = item.parameters[i];
 			};
 			
 			xml.appendChild(node);
@@ -122,7 +122,7 @@ package me.markezine.lazyloader.core
 		
 		public function destroyInstance(instanceid:String):void{
 			while(xml.item.(@instanceId == instanceid).length() > 0){
-				destroyItem(xml.item.(@instanceId == instanceid));
+				destroyItem(xml.item.(@instanceId == instanceid)[0]);
 			}
 		}
 	}

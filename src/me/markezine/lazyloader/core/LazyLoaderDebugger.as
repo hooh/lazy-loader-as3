@@ -15,8 +15,8 @@ package me.markezine.lazyloader.core
 					break;
 				
 				case LazyLoaderDebugModes.ERRORS:
-					trace("LazyLoader action: ", "error", "relative: ", item.url, "absolute: ", 
-						item.absoluteUrl, "errorType: ", additionalInfo);
+					trace("LazyLoader action: ", "error", "relative: ", item ? item.url : "no item", "absolute: ", 
+						item ? item.absoluteUrl : "no item", "errorType: ", additionalInfo);
 					break;
 			}
 			
