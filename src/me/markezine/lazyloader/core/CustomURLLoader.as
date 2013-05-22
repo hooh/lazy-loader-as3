@@ -97,6 +97,7 @@ package me.markezine.lazyloader.core
 		
 		private function internalHandler(event:Event):void{
 			switch(event.type){
+				case SecurityErrorEvent.SECURITY_ERROR:
 				case IOErrorEvent.IO_ERROR:
 					_status = LazyLoaderStatus.ERROR;
 					dispatchEvent(new LazyLoaderErrorEvent(LazyLoaderErrorEvent.LAZYLOADER_ERROR, event));
@@ -107,12 +108,6 @@ package me.markezine.lazyloader.core
 					if(HTTPStatusEvent(event).status != 0 && (HTTPStatusEvent(event).status < 200 || HTTPStatusEvent(event).status > 399)){
 						dispatchEvent(new LazyLoaderErrorEvent(LazyLoaderErrorEvent.LAZYLOADER_ERROR, event));
 					}
-					break;
-				
-				case SecurityErrorEvent.SECURITY_ERROR:
-						_status = LazyLoaderStatus.ERROR;
-						dispatchEvent(new LazyLoaderErrorEvent(LazyLoaderErrorEvent.LAZYLOADER_ERROR, event));
-						removeInternalHandlers();
 					break;
 				
 				case Event.COMPLETE:

@@ -44,6 +44,7 @@ package me.markezine.lazyloader.core
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.NetStatusEvent;
+	import flash.events.SecurityErrorEvent;
 	import flash.events.TimerEvent;
 	import flash.external.ExternalInterface;
 	import flash.media.SoundTransform;
@@ -96,6 +97,7 @@ package me.markezine.lazyloader.core
 		private function addInternalHandlers():void{
 			super.addEventListener(IOErrorEvent.IO_ERROR, internalHandler);
 			super.addEventListener(NetStatusEvent.NET_STATUS, internalHandler);
+			super.addEventListener(SecurityErrorEvent.SECURITY_ERROR, internalHandler);
 			timer = new Timer(100);
 			timer.addEventListener(TimerEvent.TIMER, internalHandler);
 			timer.start();
@@ -121,6 +123,7 @@ package me.markezine.lazyloader.core
 		private function internalHandler(event:Event):void{
 			switch(event.type){
 				case IOErrorEvent.IO_ERROR:
+				case SecurityErrorEvent.SECURITY_ERROR:
 					_status = LazyLoaderStatus.ERROR;
 					dispatchEvent(new LazyLoaderErrorEvent(LazyLoaderErrorEvent.LAZYLOADER_ERROR, event));
 					removeInternalHandlers();
@@ -162,6 +165,7 @@ package me.markezine.lazyloader.core
 		}
 		
 		private function removeInternalHandlers():void{
+			super.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, internalHandler);
 			super.removeEventListener(IOErrorEvent.IO_ERROR, internalHandler);
 			super.removeEventListener(NetStatusEvent.NET_STATUS, internalHandler);
 			super.removeEventListener(Event.COMPLETE, internalHandler);

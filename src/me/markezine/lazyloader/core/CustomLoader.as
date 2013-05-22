@@ -45,6 +45,7 @@ package me.markezine.lazyloader.core
 	import flash.events.HTTPStatusEvent;
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
+	import flash.events.SecurityErrorEvent;
 	import flash.net.URLRequest;
 	import flash.system.LoaderContext;
 	import flash.utils.ByteArray;
@@ -96,12 +97,14 @@ package me.markezine.lazyloader.core
 		
 		private function addInternalHandlers():void{
 			contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, internalHandler, false, int.MAX_VALUE);
+			contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, internalHandler, false, int.MAX_VALUE);
 			contentLoaderInfo.addEventListener(HTTPStatusEvent.HTTP_STATUS, internalHandler, false, int.MAX_VALUE);
 			contentLoaderInfo.addEventListener(Event.COMPLETE, internalHandler,false, int.MAX_VALUE);
 		}
 		
 		private function internalHandler(event:Event):void{
 			switch(event.type){
+				case SecurityErrorEvent.SECURITY_ERROR:
 				case IOErrorEvent.IO_ERROR:
 					_status = LazyLoaderStatus.ERROR;
 					dispatchEvent(new LazyLoaderErrorEvent(LazyLoaderErrorEvent.LAZYLOADER_ERROR, event));
@@ -122,6 +125,7 @@ package me.markezine.lazyloader.core
 		}
 		
 		private function removeInternalHandlers():void{
+			contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, internalHandler);
 			contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, internalHandler);
 			contentLoaderInfo.removeEventListener(HTTPStatusEvent.HTTP_STATUS, internalHandler);
 			contentLoaderInfo.removeEventListener(Event.COMPLETE, internalHandler);
