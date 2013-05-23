@@ -46,6 +46,7 @@ package me.markezine.lazyloader.core
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
 	import flash.events.SecurityErrorEvent;
+	import flash.external.ExternalInterface;
 	import flash.net.URLRequest;
 	import flash.system.LoaderContext;
 	import flash.utils.ByteArray;
@@ -111,7 +112,7 @@ package me.markezine.lazyloader.core
 					removeInternalHandlers();
 					break;
 				
-				case HTTPStatusEvent.HTTP_STATUS:
+				case HTTPStatusEvent.HTTP_STATUS: 
 					if(HTTPStatusEvent(event).status < 200 || HTTPStatusEvent(event).status > 399){  
 						dispatchEvent(new LazyLoaderErrorEvent(LazyLoaderErrorEvent.LAZYLOADER_ERROR, event));
 					}

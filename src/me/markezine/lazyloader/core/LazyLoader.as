@@ -45,6 +45,7 @@ package me.markezine.lazyloader.core {
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.external.ExternalInterface;
 	import flash.media.Sound;
 	import flash.net.NetStream;
 	import flash.system.ApplicationDomain;
@@ -73,6 +74,7 @@ package me.markezine.lazyloader.core {
 		public static var defaultApplicationDomain:ApplicationDomain = null;
 		public static var defaultSecurityDomain:SecurityDomain = null;
 		public static var debugMode:String = LazyLoaderDebugModes.ERRORS;
+		public static var debugOnJavascriptConsole:Boolean = false;
 		
 		private static var instances:Dictionary = new Dictionary();
 		private static var items:ItemList = new ItemList();
@@ -180,6 +182,7 @@ package me.markezine.lazyloader.core {
 			item.instance = id;
 			item.uniqueId = items.addItem(item);
 			item.addEventListener(Event.OPEN, itemListener);
+			item.addEventListener(LazyLoaderErrorEvent.LAZYLOADER_ERROR, itemListener, false, int.MAX_VALUE - 1);
 			
 			if(_started) {
 				waiting.push(item.uniqueId);
@@ -376,9 +379,8 @@ package me.markezine.lazyloader.core {
 			switch(event.type){
 				case Event.OPEN:
 					_status = LazyLoaderStatus.LOADING;
-					item.addEventListener(LazyLoaderEvent.PROGRESS, itemListener, false, int.MAX_VALUE - 1);
+					if(hasEventListener(LazyLoaderEvent.PROGRESS)) item.addEventListener(LazyLoaderEvent.PROGRESS, itemListener, false, int.MAX_VALUE - 1);
 					item.addEventListener(LazyLoaderEvent.COMPLETE, itemListener, false, int.MAX_VALUE - 1);
-					item.addEventListener(LazyLoaderErrorEvent.LAZYLOADER_ERROR, itemListener, false, int.MAX_VALUE - 1);
 					item.addEventListener(LazyLoaderEvent.CANCELED, itemListener, false, int.MAX_VALUE - 1);
 					
 					LazyLoaderUtils.removeFromVector(added, item.uniqueId);
