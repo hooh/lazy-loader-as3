@@ -45,13 +45,13 @@ package me.markezine.lazyloader.core {
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.external.ExternalInterface;
 	import flash.media.Sound;
 	import flash.net.NetStream;
 	import flash.system.ApplicationDomain;
 	import flash.system.SecurityDomain;
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
+	import flash.utils.getTimer;
 	
 	import me.markezine.lazyloader.events.LazyLoaderErrorEvent;
 	import me.markezine.lazyloader.events.LazyLoaderEvent;
@@ -90,7 +90,7 @@ package me.markezine.lazyloader.core {
 		private var _started:Boolean = false;
 		private var _maxConnections:Number = 4;
 		private var _destroyed:Boolean = false;
-		private var _prevBytesLoaded:uint = 0;
+		private var _lastProgressTime:int = 0;
 		public var debugMode:String = "";
 		
 		/**
@@ -389,8 +389,9 @@ package me.markezine.lazyloader.core {
 					break;
 				
 				case LazyLoaderEvent.PROGRESS:
-					if(bytesLoaded != _prevBytesLoaded){
-						_prevBytesLoaded = bytesLoaded;
+					var timer:int = getTimer();
+					if(timer > _lastProgressTime){
+						timer = _lastProgressTime;
 						dispatchEvent(new LazyLoaderEvent(LazyLoaderEvent.PROGRESS, bytesLoaded, bytesTotal));
 					}
 					break;
