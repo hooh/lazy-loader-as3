@@ -15,6 +15,10 @@ package me.markezine.lazyloader.plugins.speedtest
 		private var _currentbpms:uint = 0;
 		private var bpmsData:Vector.<Number> = new Vector.<Number>();
 		
+		public function SpeedTestPlugin(instance:LazyLoader = null){
+			if(instance) init(instance);
+		}
+		
 		public function init(instance:LazyLoader):void{		
 			instance.addEventListener(LazyLoaderEvent.PROGRESS, progressListener);
 			instance.addEventListener(LazyLoaderEvent.COMPLETE, completeListener);
