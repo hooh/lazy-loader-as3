@@ -120,7 +120,7 @@ package me.markezine.lazyloader.core {
 		{
 			if (!params) params = {};
 			if (params is String) params = {id:params};
-			if(params is LazyLoaderVariables) params = LazyLoaderVariables(params).toObject();
+			if(params is LazyLoaderVariables) params = LazyLoaderVariables(params).serialized();
 			_context = params.context;
 			_request = LazyLoaderUtils.getRequest(request);
 			_relativeUrl = _request.url;
@@ -244,6 +244,9 @@ package me.markezine.lazyloader.core {
 		 */
 		public function load():void{
 			if(_useAbsoluteURL) _request.url = _absoluteUrl;
+			if(_params.avoidCache){
+				_request.url = (_request.url.indexOf("?") > -1 ? _request.url + "&" : _request.url + "?") + LazyLoaderUtils.createUniqueId();
+			}
 			if(type == ItemType.AUDIO && (_loader.status == LazyLoaderStatus.CANCELED || _loader.status == LazyLoaderStatus.ERROR)){
 				var i:String;
 				for(i in listeners) _loader.removeEventListener(i, dispatchEvent,listeners[i].useCapture);

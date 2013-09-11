@@ -59,7 +59,12 @@ package me.markezine.lazyloader.core
 		/**
 		 * The LoaderContext or SoundLoaderContext that should be used.
 		 */
-		public var context:Object; 
+		public var context:Object;
+		
+		/**
+		 * Set this to true to avoid resource caching.
+		 */
+		public var avoidCache:Boolean;
 		
 		/**
 		 * Used to define the parameters object of an item.
@@ -68,8 +73,9 @@ package me.markezine.lazyloader.core
 		 * @param context the LoaderContext that should be used.
 		 * @param type The type of the file. If you omit this value, LazyLoader will try to identify
 		 * it based on the file extension.
+		 * @param avoidCache if this is set to true, it will avoid resource caching.
 		 */
-		public function LazyLoaderVariables(id:String = null, context:Object = null, type:String = null)
+		public function LazyLoaderVariables(id:String = null, context:Object = null, type:String = null, avoidCache:Boolean = false)
 		{
 			this.id = id;
 			this.context = context;
@@ -80,7 +86,7 @@ package me.markezine.lazyloader.core
 			return type;
 		}
 		
-		internal function toObject():Object{
+		internal function serialized():Object{
 			var result:Object = {};
 			for(var i:String in this){
 				result[i] = this[i];
@@ -90,6 +96,7 @@ package me.markezine.lazyloader.core
 			result.context = this.context;
 			result.type = this.type;
 			result.forceType = this.type;
+			result.avoidCache = this.avoidCache;
 			
 			return result;
 		}
