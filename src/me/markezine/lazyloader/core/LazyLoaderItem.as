@@ -244,6 +244,7 @@ package me.markezine.lazyloader.core {
 		 */
 		public function load():void{
 			if(_useAbsoluteURL) _request.url = _absoluteUrl;
+			
 			if(_params.avoidCache){
 				_request.url = (_request.url.indexOf("?") > -1 ? _request.url + "&" : _request.url + "?") + LazyLoaderUtils.createUniqueId();
 			}
