@@ -55,6 +55,7 @@ package me.markezine.lazyloader.core
 	import flash.utils.ByteArray;
 	import flash.utils.Timer;
 	
+	import me.markezine.lazyloader.core.metadata.NetStreamMetadata;
 	import me.markezine.lazyloader.events.LazyLoaderErrorEvent;
 	import me.markezine.lazyloader.events.LazyLoaderEvent;
 	import me.markezine.lazyloader.events.LazyLoaderMediaEvent;
@@ -64,7 +65,7 @@ package me.markezine.lazyloader.core
 		private var request:URLRequest;
 		private var timer:Timer;
 		
-		private var _metadata:Object;
+		private var _metadata:NetStreamMetadata;
 		private var _soundTransform:SoundTransform = new SoundTransform(1,0);
 		private var _bufferOk:Boolean = false;
 		private var _prevBytesLoaded:uint;
@@ -105,7 +106,7 @@ package me.markezine.lazyloader.core
 		
 		private function metadataHandler(data:Object):void{
 			if(_metadata) return;
-			_metadata = data;
+			_metadata = new NetStreamMetadata(data);
 			dispatchEvent(new LazyLoaderMediaEvent(LazyLoaderMediaEvent.METADATA_RECEIVED, _metadata));
 		}
 		
@@ -203,6 +204,7 @@ package me.markezine.lazyloader.core
 		
 		override public function get soundTransform():SoundTransform{ return _soundTransform; }
 		public function get metadata():Object{ return _metadata; }
+		public function get netstreamMetadata():NetStreamMetadata{ return _metadata; }
 		public function get bytes():ByteArray{ return null; }
 		public function get loaded():uint{ return bytesLoaded; }
 		public function get total():uint{ return bytesTotal; }

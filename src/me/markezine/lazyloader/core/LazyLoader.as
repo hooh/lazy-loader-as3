@@ -53,6 +53,7 @@ package me.markezine.lazyloader.core {
 	import flash.utils.Dictionary;
 	import flash.utils.getTimer;
 	
+	import me.markezine.lazyloader.core.metadata.NetStreamMetadata;
 	import me.markezine.lazyloader.events.LazyLoaderErrorEvent;
 	import me.markezine.lazyloader.events.LazyLoaderEvent;
 	
@@ -665,7 +666,6 @@ package me.markezine.lazyloader.core {
 			return null;
 		}
 		
-		
 		/**
 		 * @private
 		 */
@@ -673,6 +673,32 @@ package me.markezine.lazyloader.core {
 			var item:LazyLoaderItem = LazyLoader.getItem(parameters);
 			if(item && item.content is Sound) return Sound(item.content).id3;
 			if(item && item.content is CustomNetStream) return CustomNetStream(item.content).metadata;
+			return null;
+		}
+		
+		/**
+		 * You can use this method to retrieve a <code>NetStream</code> metadata that match the 
+		 * properties of the parameters object. You can also use a string 
+		 * to match the item id or url. Please note that if there are more than one item with the 
+		 * same parameters, it will return the last added item. 
+		 * If the item is not a <code>Netstream</code> object, it will return <code>null</code>. 
+		 * If called on the class, searches the parameter in all instances.
+		 * @param parameters The search parameters to get the item.
+		 * @return The <code>NetstreamMetadata</code> matching the current parameters. 
+		 * 
+		 */
+		public function getNetstreamMetadata(parameters:Object):NetStreamMetadata{
+			var item:LazyLoaderItem = this.getItem(parameters);
+			if(item && item.content is CustomNetStream) return CustomNetStream(item.content).netstreamMetadata;
+			return null;
+		}
+		
+		/**
+		 * @private
+		 */
+		static public function getNetstreamMetadata(parameters:Object):NetStreamMetadata{
+			var item:LazyLoaderItem = LazyLoader.getItem(parameters);
+			if(item && item.content is CustomNetStream) return CustomNetStream(item.content).netstreamMetadata;
 			return null;
 		}
 		
